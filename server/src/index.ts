@@ -23,7 +23,25 @@ for (const envVar of requiredEnvVars) {
 }
 
 const app = express();
-app.use(cors());
+// CORS: allow specific origins via CORS_ORIGIN (comma-separated), or allow all when not set
+const allowedOrigins = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+app.use(
+  cors({
+    origin: (origin: any, callback: any) => {
+      // allow non-browser requests (no origin) and allow all if no env is set
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.length === 0) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.use(express.json());
 
 // Routes
