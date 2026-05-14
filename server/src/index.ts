@@ -575,10 +575,9 @@ app.post("/api/seed-admin", async (_req, res) => {
       success: true,
       username: admin.username,
       // If ADMIN_PASSWORD was provided via env, do not return it in response.
-      message:
-        process.env.ADMIN_PASSWORD
-          ? "Admin created. Credentials taken from environment."
-          : `Admin created. Generated password: ${adminPasswordPlain} (store securely)`,
+      message: process.env.ADMIN_PASSWORD
+        ? "Admin created. Credentials taken from environment."
+        : `Admin created. Generated password: ${adminPasswordPlain} (store securely)`,
     });
   } catch (error: any) {
     if (error.code === 11000) {
