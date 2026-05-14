@@ -1,0 +1,14 @@
+{
+  "name": "typing-race",
+  "version": "1.0.0",
+  "description": "Multiplayer typing race game",
+  "private": true,
+  "scripts": {
+    "dev": "cd server && npm run dev:all",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "server:port": "cd server && PORT=$PORT npm run dev",
+    "client:port": "cd client && npx vite --port $PORT",
+    "install-all": "cd server && npm install && cd ../client && npm install"
+  }
+}
