@@ -52,7 +52,7 @@ export function Settings() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const savePreferences = async (prefs: Record<string, string>) => {
+  const savePreferences = async (prefs: Record<string, any>) => {
     updatePreferences(prefs as any);
     if (token && !user?.isGuest) {
       try {
