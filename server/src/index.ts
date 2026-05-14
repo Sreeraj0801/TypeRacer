@@ -527,11 +527,27 @@ app.get("/api/settings/status", (_req, res) => {
 });
 
 // Seed admin account (only works if no admin exists)
-app.post("/api/seed-admin", async (_req, res) => {
+app.post("/api/seed-admin", async (req, res) => {
   try {
     const bcrypt = require("bcryptjs");
     const existingAdmin = await User.findOne({ role: "admin" });
     if (existingAdmin) {
+      // If caller provided username/password, update the existing admin
+      const body = (req as any).body || {};
+      if (body.username || body.password) {
+        if (body.username) existingAdmin.username = body.username.toLowerCase();
+        if (body.password) {
+          existingAdmin.password = await bcrypt.hash(body.password, 10);
+        }
+        existingAdmin.isAdmin = true;
+        await existingAdmin.save();
+        return res.json({
+          success: true,
+          message: "Existing admin updated",
+          username: existingAdmin.username,
+          isAdmin: existingAdmin.isAdmin,
+        });
+      }
       // Ensure isAdmin flag is set for existing admin user
       if (!existingAdmin.isAdmin) {
         existingAdmin.isAdmin = true;
@@ -544,9 +560,11 @@ app.post("/api/seed-admin", async (_req, res) => {
         isAdmin: existingAdmin.isAdmin,
       });
     }
-    // Prefer credentials from environment for security
-    const adminUsername = process.env.ADMIN_USERNAME || "admin";
-    let adminPasswordPlain = process.env.ADMIN_PASSWORD;
+    // Prefer credentials from request body, then environment for security
+    const body = (req as any).body || {};
+    const adminUsername =
+      body.username || process.env.ADMIN_USERNAME || "admin";
+    let adminPasswordPlain = body.password || process.env.ADMIN_PASSWORD;
 
     // If no ADMIN_PASSWORD is provided, generate a secure random password
     if (!adminPasswordPlain) {
@@ -564,7 +582,7 @@ app.post("/api/seed-admin", async (_req, res) => {
 
     const passwordHash = await bcrypt.hash(adminPasswordPlain, 10);
     const admin = await User.create({
-      username: adminUsername,
+      username: adminUsername.toLowerCase(),
       password: passwordHash,
       isGuest: false,
       role: "admin",
@@ -583,7 +601,7 @@ app.post("/api/seed-admin", async (_req, res) => {
     if (error.code === 11000) {
       // Username taken, update existing user to admin
       const adminUser = await User.findOneAndUpdate(
-        { username: process.env.ADMIN_USERNAME || "admin" },
+        { username: (process.env.ADMIN_USERNAME || "admin").toLowerCase() },
         { role: "admin", isAdmin: true },
         { new: true },
       );
