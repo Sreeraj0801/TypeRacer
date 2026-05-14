@@ -24,17 +24,46 @@ for (const envVar of requiredEnvVars) {
 
 const app = express();
 // CORS: allow specific origins via CORS_ORIGIN (comma-separated), or allow all when not set
+const normalizeOrigin = (u: string) => u.replace(/\/+$/g, "").toLowerCase();
 const allowedOrigins = (process.env.CORS_ORIGIN || "")
   .split(",")
-  .map((s) => s.trim())
+  .map((s) => normalizeOrigin(s.trim()))
   .filter(Boolean);
+
+console.log("CORS allowed origins:", allowedOrigins);
+
 app.use(
   cors({
     origin: (origin: any, callback: any) => {
       // allow non-browser requests (no origin) and allow all if no env is set
       if (!origin) return callback(null, true);
       if (allowedOrigins.length === 0) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+
+      const originNorm = normalizeOrigin(String(origin));
+      if (allowedOrigins.includes(originNorm)) return callback(null, true);
+
+      // allow host-only match to handle www vs non-www differences
+      try {
+        const originHost = new URL(originNorm).host;
+        for (const ao of allowedOrigins) {
+          try {
+            const aoHost = new URL(ao).host;
+            if (aoHost === originHost) return callback(null, true);
+          } catch {
+            // ao may not be a full URL; fall back to simple comparison
+            if (originNorm.endsWith(ao) || ao.endsWith(originNorm))
+              return callback(null, true);
+          }
+        }
+      } catch {
+        // If parsing fails, fall back to substring checks
+        for (const ao of allowedOrigins) {
+          if (originNorm.endsWith(ao) || ao.endsWith(originNorm))
+            return callback(null, true);
+        }
+      }
+
+      console.warn("CORS rejected origin:", origin, "allowed:", allowedOrigins);
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
