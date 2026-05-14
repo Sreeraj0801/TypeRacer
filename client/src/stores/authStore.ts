@@ -2,7 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { UserData } from "../types";
 
-const API_BASE = `http://${window.location.hostname}:3005/api`;
+const API_BASE =
+  (import.meta.env.VITE_API_BASE as string) ||
+  `http://${window.location.hostname}:3005/api`;
 
 interface AuthState {
   user: UserData | null;

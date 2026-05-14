@@ -11,7 +11,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const API_BASE = `http://${window.location.hostname}:3005/api`;
+const API_BASE =
+  (import.meta.env.VITE_API_BASE as string) ||
+  `http://${window.location.hostname}:3005/api`;
 
 const CURSOR_STYLES = [
   { value: "line", label: "Line", preview: "│" },
@@ -42,6 +44,9 @@ export function Settings() {
   );
   const [cursorColor, setCursorColor] = useState(
     user?.preferences?.cursorColor || "#e2b714",
+  );
+  const [fontSize, setFontSize] = useState<number>(
+    (user?.preferences?.fontSize as number) || 24,
   );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -80,6 +85,11 @@ export function Settings() {
   const handleCursorColorChange = (color: string) => {
     setCursorColor(color);
     savePreferences({ cursorColor: color });
+  };
+
+  const handleFontSizeChange = (size: number) => {
+    setFontSize(size);
+    savePreferences({ fontSize: size });
   };
 
   const handlePasswordChange = async (e: React.FormEvent) => {
@@ -142,6 +152,20 @@ export function Settings() {
             >
               Light
             </button>
+          </div>
+        </div>
+        <div className="settings-option">
+          <label>Typing Font Size</label>
+          <div className="font-size-options">
+            {[16, 20, 24, 28, 32].map((s) => (
+              <button
+                key={s}
+                className={`font-size-btn ${fontSize === s ? "active" : ""}`}
+                onClick={() => handleFontSizeChange(s)}
+              >
+                {s}px
+              </button>
+            ))}
           </div>
         </div>
       </div>

@@ -3,7 +3,9 @@ import { useAuthStore } from "../stores/authStore";
 import type { MatchHistory } from "../types";
 import { User, Trophy, Zap, Target } from "lucide-react";
 
-const API_BASE = `http://${window.location.hostname}:3005/api`;
+const API_BASE =
+  (import.meta.env.VITE_API_BASE as string) ||
+  `http://${window.location.hostname}:3005/api`;
 
 export function Profile() {
   const { user, token } = useAuthStore();

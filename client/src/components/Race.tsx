@@ -25,7 +25,9 @@ export function Race() {
   const [errors, setErrors] = useState<Set<number>>(new Set());
   const [finished, setFinished] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
-  const [fontSize, setFontSize] = useState(24);
+  const [fontSize, setFontSize] = useState<number>(
+    (user?.preferences?.fontSize as number) || 24,
+  );
   const textDisplayRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -120,6 +122,12 @@ export function Race() {
 
   // Dynamic font sizing - shrink font to fit all text on screen without scroll
   useEffect(() => {
+    // If user has chosen a font size in preferences, honor it and skip auto-fit
+    if (user?.preferences?.fontSize) {
+      setFontSize(user.preferences.fontSize as number);
+      return;
+    }
+
     const container = containerRef.current;
     const textEl = textDisplayRef.current;
     if (!container || !textEl || !text) return;

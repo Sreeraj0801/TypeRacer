@@ -71,6 +71,7 @@ export interface UserData {
     theme: "dark" | "light";
     cursorStyle?: "line" | "block" | "underline" | "pulse";
     cursorColor?: string;
+    fontSize?: number;
   };
 }
 

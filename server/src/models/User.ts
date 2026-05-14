@@ -79,6 +79,7 @@ const UserSchema = new Schema<IUser>(
         default: "line",
       },
       cursorColor: { type: String, default: "#e2b714" },
+      fontSize: { type: Number, default: 24 },
     },
   },
   { timestamps: true },

@@ -93,13 +93,11 @@ router.post("/login", async (req: Request, res: Response) => {
     }
 
     if (user.isBlocked) {
-      return res
-        .status(403)
-        .json({
-          error:
-            "Your account has been blocked. Reason: " +
-            (user.blockedReason || "Violation of terms"),
-        });
+      return res.status(403).json({
+        error:
+          "Your account has been blocked. Reason: " +
+          (user.blockedReason || "Violation of terms"),
+      });
     }
 
     const isValid = await bcrypt.compare(password, user.password);
@@ -219,7 +217,7 @@ router.put("/preferences", async (req: Request, res: Response) => {
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, getJwtSecret()) as { userId: string };
 
-    const { theme, cursorStyle, cursorColor } = req.body;
+    const { theme, cursorStyle, cursorColor, fontSize } = req.body;
     const update: any = {};
     if (theme && ["dark", "light"].includes(theme)) {
       update["preferences.theme"] = theme;
@@ -232,6 +230,14 @@ router.put("/preferences", async (req: Request, res: Response) => {
     }
     if (cursorColor && /^#[0-9a-fA-F]{6}$/.test(cursorColor)) {
       update["preferences.cursorColor"] = cursorColor;
+    }
+    if (
+      typeof fontSize !== "undefined" &&
+      Number.isFinite(Number(fontSize)) &&
+      Number(fontSize) >= 12 &&
+      Number(fontSize) <= 64
+    ) {
+      update["preferences.fontSize"] = Number(fontSize);
     }
 
     const user = await User.findByIdAndUpdate(decoded.userId, update, {

@@ -4,7 +4,6 @@ import {
   Clock,
   Target,
   RotateCcw,
-  LogOut,
   TrendingUp,
   ArrowLeft,
 } from "lucide-react";
@@ -30,16 +29,7 @@ ChartJS.register(
   Legend,
 );
 
-const PLAYER_COLORS = [
-  "#e2b714",
-  "#e74c3c",
-  "#2ecc71",
-  "#3498db",
-  "#9b59b6",
-  "#e67e22",
-  "#1abc9c",
-  "#fd79a8",
-];
+// PLAYER_COLORS removed — not used in this component
 
 export function Results() {
   const { game, handleRematch, handleLeave } = useGameContext();

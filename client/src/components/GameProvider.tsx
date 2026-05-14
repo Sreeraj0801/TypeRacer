@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { useGame } from "../hooks/useGame";
-import type { RoomSettings, GameMode } from "../types";
+import type { RoomSettings } from "../types";
 import { useAuthStore } from "../stores/authStore";
 
 type GameView = "home" | "lobby" | "race" | "results";

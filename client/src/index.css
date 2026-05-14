@@ -195,6 +195,25 @@ select.input {
   letter-spacing: 0.5px;
   color: var(--text-secondary);
 }
+
+.font-size-options {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.font-size-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.font-size-btn.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent-hover);
+}
 .accent {
   color: var(--accent);
 }
@@ -990,7 +1009,11 @@ select.input {
 
 .race-char {
   position: relative;
-  display: inline;
+  display: inline-block;
+  vertical-align: middle;
+  /* smaller reserved space to reduce layout shift while keeping chars tight */
+  padding-right: 2px;
+  min-width: 0.25ch;
 }
 .race-char-pending {
   color: var(--text-muted);
@@ -1067,14 +1090,14 @@ select.input {
 /* Other players cursors - small, low opacity */
 .race-other-cursor {
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  /* place cursor overlay inside the character box without affecting flow */
+  right: 4px;
+  top: 15%;
   width: 2px;
+  height: 70%;
   border-left: 2px solid;
-  opacity: 0.25;
+  opacity: 0.28;
   pointer-events: none;
-  height: 100%;
 }
 
 .hidden-input {

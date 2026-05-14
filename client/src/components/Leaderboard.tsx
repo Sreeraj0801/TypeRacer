@@ -24,7 +24,9 @@ ChartJS.register(
   Legend,
 );
 
-const API_BASE = `http://${window.location.hostname}:3005/api`;
+const API_BASE =
+  (import.meta.env.VITE_API_BASE as string) ||
+  `http://${window.location.hostname}:3005/api`;
 
 export function Leaderboard() {
   const { token, user } = useAuthStore();
