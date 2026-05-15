@@ -741,13 +741,13 @@ const PORT = Number(process.env.PORT) || 3005;
 connectDB()
   .then(() => {
     server.listen(PORT, "0.0.0.0", () => {
-      console.log(`⚡ TYPE_STRIKE server running on port ${PORT}`);
+      console.log(`⚡ Type Racer server running on port ${PORT}`);
     });
   })
   .catch((err) => {
     console.error("Failed to connect to MongoDB:", err);
     // Start server anyway for development without DB
     server.listen(PORT, "0.0.0.0", () => {
-      console.log(`⚡ TYPE_STRIKE server running on port ${PORT} (no DB)`);
+      console.log(`⚡ Type Racer server running on port ${PORT} (no DB)`);
     });
   });

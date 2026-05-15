@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../stores/authStore";
 import { Keyboard } from "lucide-react";
+import { APP_NAME } from "../constants/app";
 
 export function AuthPage() {
   const [mode, setMode] = useState<"login" | "register" | "guest">("login");
@@ -30,9 +31,7 @@ export function AuthPage() {
       <div className="auth-container">
         <div className="auth-logo">
           <Keyboard size={40} />
-          <h1>
-            TYPE<span className="accent">_STRIKE</span>
-          </h1>
+          <h1>{APP_NAME}</h1>
           <p className="auth-subtitle">Competitive Typing Races</p>
         </div>
 

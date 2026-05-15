@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { APP_NAME, APP_VERSION } from "../constants/app";
 
 const API_BASE =
   (import.meta.env.VITE_API_BASE as string) ||
@@ -250,7 +251,9 @@ export function Settings() {
           <Palette size={16} /> About
         </h3>
         <div className="settings-about">
-          <p>TYPE_STRIKE v1.0.0</p>
+          <p>
+            {APP_NAME} v{APP_VERSION}
+          </p>
           <p>A competitive multiplayer typing race game.</p>
         </div>
       </div>

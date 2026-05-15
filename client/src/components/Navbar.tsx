@@ -7,6 +7,7 @@ import {
   LogOut,
   Shield,
 } from "lucide-react";
+import { APP_NAME } from "../constants/app";
 
 export function Navbar() {
   const { user, logout } = useAuthStore();
@@ -23,7 +24,17 @@ export function Navbar() {
         <NavLink to="/" className="navbar-logo">
           <Keyboard size={20} />
           <span>
-            TYPE<span className="accent">_STRIKE</span>
+            {(() => {
+              const parts = APP_NAME.split(" ");
+              const first = parts.shift();
+              const rest = parts.join(" ");
+              return (
+                <>
+                  {first}
+                  {rest ? <span className="accent"> {rest}</span> : null}
+                </>
+              );
+            })()}
           </span>
         </NavLink>
 

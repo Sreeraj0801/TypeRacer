@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { UserData } from "../types";
+import { STORAGE_KEYS } from "../constants/app";
 
 const API_BASE =
   (import.meta.env.VITE_API_BASE as string) ||
@@ -134,7 +135,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: "typestrike-auth",
+      name: STORAGE_KEYS.AUTH,
       partialize: (state) => ({ user: state.user, token: state.token }),
     },
   ),

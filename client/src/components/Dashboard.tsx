@@ -3,6 +3,7 @@ import { useGameContext } from "./GameProvider";
 import { useAuthStore } from "../stores/authStore";
 import type { RoomSettings, PublicRoom } from "../types";
 import { User, Globe, Lock, Users, Zap, Trophy } from "lucide-react";
+import { APP_NAME, APP_VERSION } from "../constants/app";
 import toast from "react-hot-toast";
 
 const DEFAULT_SETTINGS: Partial<RoomSettings> = {
@@ -331,7 +332,9 @@ export function Dashboard() {
       {/* Footer */}
       <footer className="dashboard-footer">
         <span>Server: {game.connected ? "Online" : "Offline"}</span>
-        <span>TYPE_STRIKE v1.0.0</span>
+        <span>
+          {APP_NAME} v{APP_VERSION}
+        </span>
       </footer>
     </div>
   );

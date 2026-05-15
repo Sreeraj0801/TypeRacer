@@ -1,10 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import { STORAGE_KEYS } from "./constants/app";
 import App from "./App.tsx";
 
 // Apply saved theme on load
-const savedState = localStorage.getItem("typestrike-auth");
+const savedState = localStorage.getItem(STORAGE_KEYS.AUTH);
 if (savedState) {
   try {
     const parsed = JSON.parse(savedState);
